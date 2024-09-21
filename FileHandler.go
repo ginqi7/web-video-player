@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
 	"strings"
+	"net/url"
 )
 
 type Navigation struct {
@@ -50,7 +50,7 @@ func getDirectories(url string) []Directory {
 	for _, entry := range entries {
 		if entry.IsDir() {
 			directory := Directory{
-				RelativePath: "",
+				RelativePath: url,
 				Name:         entry.Name(),
 			}
 			directories = append(directories, directory)
@@ -81,7 +81,6 @@ func getFiles(url string) []File {
 	}
 	files := []File{}
 	for _, entry := range entries {
-		fmt.Println(entry.Name())
 		if isVideoFile(entry.Name()) {
 			file := File{
 				Name: entry.Name(),
@@ -97,8 +96,12 @@ func getBasePath() string {
 	return os.Getenv(varName)
 }
 
-func openFile(url string) (*os.File, error) {
-	full_path := getBasePath() + "/" + url
-	fmt.Println(full_path)
+func openFile(path string) (*os.File, error) {
+	full_path := getBasePath() + "/" + path
+	full_path, err := url.QueryUnescape(full_path)
+	if err != nil {
+		fmt.Println("Error decoding URL:", err)
+		return nil, err
+	}
 	return os.Open(full_path)
 }

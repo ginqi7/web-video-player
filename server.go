@@ -68,10 +68,10 @@ type TemplateData struct {
 }
 
 func (s *Server) PlayerHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
+	path := r.URL.Path
 	tmplData := TemplateData{
 		StaticVersion: s.staticVersion,
-		VideoURL:      fmt.Sprintf("/video/%s", query.Get("path")),
+		VideoURL:      fmt.Sprintf("/video/%s", path),
 	}
 	if err := s.tmpl.ExecuteTemplate(w, "player.html", tmplData); err != nil {
 		httpError(r, w, err, http.StatusInternalServerError)
@@ -83,6 +83,7 @@ func (s *Server) VideoHandler(w http.ResponseWriter, r *http.Request) {
 	// Open Audio File
 	videoFile, err := openFile(r.URL.Path)
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Unable to open audio file", http.StatusInternalServerError)
 		return
 	}
@@ -142,7 +143,6 @@ func (s *Server) VideoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) ListingHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
 	tmplData := TemplateData{
 		StaticVersion: s.staticVersion,
 		Navigations:   parseNavigation(r.URL.Path),

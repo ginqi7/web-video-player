@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 )
 
 type Dictionary struct {
@@ -30,8 +29,6 @@ func query(word string) *Dictionary {
 		words := jsonObj["ec"].(map[string]interface{})["word"].([]interface{})
 		dictionary := Dictionary{}
 		for _, word := range words {
-			fmt.Println("Type of x:", reflect.TypeOf(word)) // 输出: Type of x: int
-			fmt.Println() // 输出: Type of x: int
 			wordDict := word.(map[string]interface {})
 			dictionary.Usphone = wordDict["usphone"].(string)
 			dictionary.Ukphone = wordDict["ukphone"].(string)

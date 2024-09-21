@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/{{ .StaticVersion }}/tailwind-output.css">
+    <link rel="stylesheet" href="/static/{{ .StaticVersion }}/app.css">
+    <script src="/static/{{ .StaticVersion }}/pulltorefresh.js"></script>
+    
+    <link rel="manifest" href="/static/{{ .StaticVersion }}/manifest.json" />	
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head>
+  <body class="h-screen w-screen relative">
+    <div class="dictionary w-4/6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-50 p-4 shadow-md z-10 hidden" >
+    </div>
+    <video
+      id="my-player"
+      class="video-js h-5/6 relative m-auto filter none"
+      controls
+      preload="auto">
+      <source src="{{ .VideoURL }}" type="video/webm"></source>
+    </video>
+    <p class="subtitle w-11/12 m-auto text-4xl break-words relative">
+    </p>
+
+    <script src="/static/{{ .StaticVersion }}/subtitles.js"></script>
+    <script src="/static/{{ .StaticVersion }}/translate.js"></script>
+    <script src="/static/{{ .StaticVersion }}/app.js"></script>
+    <script>
+      const ptr = PullToRefresh.init({
+	  mainElement: 'body',
+	  triggerElement: 'body',
+	  onRefresh() {
+	      window.location.reload();
+	  }
+      });
+    </script>
+  </body>
+</html>

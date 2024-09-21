@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Video Player</title>
+    <link rel="stylesheet" href="/static/{{ .StaticVersion }}/tailwind-output.css">
+    <link rel="stylesheet" href="/static/{{ .StaticVersion }}/app.css">
+    <script src="/static/{{ .StaticVersion }}/pulltorefresh.js"></script>
+    
+    <link rel="manifest" href="/static/{{ .StaticVersion }}/manifest.json" />	
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  </head>
+  <body>
+    <div class="w-1/2 m-auto">
+      <div class="navigations font-bold text-lg my-2"> 
+	{{range .Navigations}}
+	<a class="m-2" href="{{ .Path }}"> {{ .Name }}/ </a>
+	{{end}}
+      </div>
+
+      <ul class="border-2 border-dashed border-gray-500 p-2">
+
+	{{range .Directories}}
+	<li class="directory flex"> 
+	  <image src="/static/{{ $.StaticVersion }}/folder.svg" class="w-5 h-5 m-2" />
+	  <a href="/listing{{.RelativePath}}/{{.Name}}"> {{ .Name }} </a> 
+	</li>
+	{{end}}
+	
+	{{range .Files}}
+	<li class="file flex cursor-pointer"> 
+	  <image src="/static/{{ $.StaticVersion }}/document.svg" class="w-5 h-5 m-2" />
+	  <div class="path m-2" onclick="playVideo(event)"> {{.Name}} </div>
+	</li>
+	{{end}}
+	
+      </ul>
+
+    </div>
+    <script src="/static/{{ .StaticVersion }}/listing.js"></script>
+    <script>
+      const ptr = PullToRefresh.init({
+	  mainElement: 'body',
+	  triggerElement: 'body',
+	  onRefresh() {
+	      window.location.reload();
+	  }
+      });
+    </script>
+  </body>
+</html>

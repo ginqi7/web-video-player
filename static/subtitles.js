@@ -46,12 +46,12 @@ function parseSRT(data) {
     const subtitles = [];
 
     srtEntries.forEach(entry => {
-        const lines = entry.split('\n');
+        const lines = entry.trim().split('\n');
         if (lines.length >= 3) {
             const index = lines[0];
             const time = lines[1];
             const text = lines.slice(2).join('\n').trim();
-
+	    console.log(entry)
             const times = time.split(' --> ');
             const start = parseSRTTime(times[0].trim());
             const end = parseSRTTime(times[1].trim());

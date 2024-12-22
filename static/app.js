@@ -1,4 +1,38 @@
 var player = document.querySelector("#my-player")
+var audio = document.querySelector("#my-audio")
+
+document.addEventListener('keydown', function(event) {
+    // 检查是否按下空格键（keyCode 32）
+    if (event.code === 'Space') {
+        event.preventDefault(); // 防止页面滚动
+        if (player.paused) {
+            player.play(); // 如果视频暂停，则播放
+        } else {
+            player.pause(); // 如果视频正在播放，则暂停
+        }
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const video = document.getElementById("my-player");
+    const audio = document.getElementById("my-audio");
+
+    video.addEventListener("play", function() {
+        audio.play(); // Play the audio when the video starts
+    });
+
+    video.addEventListener("pause", function() {
+        audio.pause(); // Pause the audio when the video pauses
+    });
+
+    video.addEventListener("timeupdate", function() {
+        // Sync the audio time with the video time, if necessary
+        // This can also help in seeking
+        if (Math.abs(video.currentTime - audio.currentTime) > 0.1) {
+            audio.currentTime = video.currentTime;
+        }
+    });
+});
 
 
 window.onload = function() {

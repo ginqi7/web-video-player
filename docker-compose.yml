@@ -1,0 +1,11 @@
+version: "3"
+services:
+  server:
+    image: web-video-player:lastest
+    restart: unless-stopped
+    environment:
+      - WEB_VIDEO_PLAYER_BASE_PATH=/data
+    volumes:
+      - /some-your-path:/data
+    ports:
+      - "8082:8090"
